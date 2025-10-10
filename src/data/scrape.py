@@ -1,21 +1,17 @@
+"""Module for scraping web pages and extracting article text using BeautifulSoup."""
 import requests
 from bs4 import BeautifulSoup
+import transformers
+import trafilatura
 
+
+tokenizer = transformers.AutoTokenizer.from_pretrained("Qwen/Qwen3-0.6B")
 def get_website(url):
-    response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
-    response.raise_for_status()  # Ensure we got a successful response
-
-    # Parse the HTML
-    soup = BeautifulSoup(response.text, "html.parser")
-    article = soup.find("div", class_="article-content") or soup
-
-    # Collect paragraph + list item text in order
-    lines = []
-    for elem in article.find_all(["p", "li"]):
-        if elem.name == "li":
-            lines.append("- " + elem.get_text(strip=True))
-        else:
-            lines.append(elem.get_text(strip=True))
-    text = "\n".join(lines)
-
-    print(text)
+    downloaded = trafilatura.fetch_url(url)
+    text = trafilatura.extract(downloaded)
+    title = downloaded
+    token_length = len(tokenizer(text).input_ids)
+    print(f"Token length: {token_length}")
+    with open("trial.txt","w") as f:
+        f.write(text)
+    return text

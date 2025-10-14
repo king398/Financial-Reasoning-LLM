@@ -8,7 +8,7 @@ import os
 CSV_PATH = "nasdaq_exteral_data.csv"
 CHUNK_SIZE = 5000  # tune based on available RAM (start small)
 N_JOBS = os.cpu_count()  # number of parallel workers (adjust to CPU cores)
-HF_DATASET_REPO = "Mithilss/finance-data"
+HF_TOKEN = os.environ.get("HF_TOKEN")
 
 
 # === FUNCTION TO PROCESS ONE CHUNK ===
@@ -41,4 +41,6 @@ if len(datasets_list) == 0:
     raise RuntimeError("No chunks were successfully processed.")
 
 big_dataset = concatenate_datasets(datasets_list)
+HF_DATASET_REPO = "Mithilss/nasdaq-external-data-processed"
+
 big_dataset.push_to_hub(HF_DATASET_REPO, token=HF_TOKEN)

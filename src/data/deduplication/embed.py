@@ -68,8 +68,8 @@ def embed_documents(documents: List[str],
                     prefix: str = "query:",
                     ) -> Tensor:
     embeddings = []
-
-    for i in tqdm(range(0, len(documents), batch_size)):
+    stream = tqdm(range(0, len(documents), batch_size))
+    for i in stream:
         batch = prepare_documents(documents[i:i + batch_size],prefix)
         inputs = tokenizer(batch, max_length=512, padding=True, truncation=True, return_tensors='pt')
         inputs = {k: v.to(model.device) for k, v in inputs.items()}
@@ -77,6 +77,7 @@ def embed_documents(documents: List[str],
         batch_embeddings = average_pool(outputs.last_hidden_state, inputs['attention_mask'])
         batch_embeddings = F.normalize(batch_embeddings, p=2, dim=1)
         embeddings.append(batch_embeddings.detach().cpu().float())
+
         del inputs, outputs, batch_embeddings
     embeddings = torch.cat(embeddings, dim=0)
     return embeddings

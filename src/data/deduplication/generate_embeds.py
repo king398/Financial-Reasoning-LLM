@@ -1,7 +1,10 @@
 from datasets import load_dataset
 from embed import embed_documents,load_model
-ds = load_dataset("Mithilss/nasdaq-external-data-processed")['train']
+import numpy as np
+ds = load_dataset("Mithilss/nasdaq-external-data-2018-onwards")['train']
+ds = ds.select(range(100))
 documents = ds['Article']
 document_ids = ds['ID']
 tokenizer, model  = load_model()
-embed_documents(documents=documents,model=model,tokenizer=tokenizer,batch_size=64)
+embedding = embed_documents(documents=documents,model=model,tokenizer=tokenizer,batch_size=64).numpy()
+np.savez("embeddings.npz", embedding=embedding, document_ids=document_ids)

@@ -74,5 +74,6 @@ def embed_documents(documents: List[str],
         batch_embeddings = average_pool(outputs.last_hidden_state, inputs['attention_mask'])
         batch_embeddings = F.normalize(batch_embeddings, p=2, dim=1)
         embeddings.append(batch_embeddings.detach().cpu().float())
+        del inputs, outputs, batch_embeddings
     embeddings = torch.cat(embeddings, dim=0)
     return embeddings

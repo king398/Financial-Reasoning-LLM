@@ -64,8 +64,11 @@ def embed_documents(documents: List[str],
                     model: AutoModel,
                     tokenizer: AutoTokenizer,
                     batch_size: int = 16,
-                    prefix: str = "query:") -> Tensor:
+
+                    prefix: str = "query:",
+                    ) -> Tensor:
     embeddings = []
+
     for i in tqdm(range(0, len(documents), batch_size)):
         batch = prepare_documents(documents[i:i + batch_size],prefix)
         inputs = tokenizer(batch, max_length=512, padding=True, truncation=True, return_tensors='pt')

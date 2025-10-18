@@ -3,7 +3,7 @@ import torch
 from torch import Tensor
 from transformers import AutoTokenizer, AutoModel
 from typing import Tuple, List
-
+from  tqdm import tqdm
 def average_pool(last_hidden_states: Tensor,
                  attention_mask: Tensor) -> Tensor:
     """
@@ -66,7 +66,7 @@ def embed_documents(documents: List[str],
                     batch_size: int = 16,
                     prefix: str = "query:") -> Tensor:
     embeddings = []
-    for i in range(0, len(documents), batch_size):
+    for i in tqdm(range(0, len(documents), batch_size)):
         batch = prepare_documents(documents[i:i + batch_size],prefix)
         inputs = tokenizer(batch, max_length=512, padding=True, truncation=True, return_tensors='pt')
         inputs = {k: v.to(model.device) for k, v in inputs.items()}

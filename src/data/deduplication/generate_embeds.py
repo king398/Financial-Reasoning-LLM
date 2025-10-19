@@ -2,7 +2,6 @@ from datasets import load_dataset
 from embed import embed_documents,load_model
 import numpy as np
 ds = load_dataset("Mithilss/nasdaq-external-data-2018-onwards")['train']
-ds = ds.select(range(100))
 documents = ds['Article']
 document_ids = ds['Date']
 tokenizer, model  = load_model()

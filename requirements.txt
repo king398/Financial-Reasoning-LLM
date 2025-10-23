@@ -1,3 +1,5 @@
+tqdm
+numpy
 torch
 requests
 beautifulsoup4

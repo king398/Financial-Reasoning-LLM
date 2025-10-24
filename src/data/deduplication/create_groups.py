@@ -23,7 +23,7 @@ else:
     )
 
 # Search for top 5 similar vectors for each embedding
-k = 5
+k = 15
 batch_size = 100
 results = {}
 trial = 10

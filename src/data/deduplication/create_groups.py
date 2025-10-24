@@ -20,16 +20,17 @@ else:
         embeddings,
         save_on_disk=True,
         max_index_memory_usage="64GB",
-        use_gpu=True,
 
     )
 
 # Search for top 5 similar vectors for each embedding
 k = 5
-batch_size = 10000
+batch_size = 100
 results = {}
-
+trial = 10
 for start in tqdm(range(0, len(embeddings), batch_size)):
+    if (trial * batch_size) < start:
+        break
     end = min(start + batch_size, len(embeddings))
     batch = embeddings[start:end]
     distances, indices = index.search(batch, k)
@@ -41,6 +42,7 @@ for start in tqdm(range(0, len(embeddings), batch_size)):
             for j, dist in zip(idxs, dists)
         ]
         results[query_id] = top_results
+
 
 # Save to JSON
 with open("top5_similarities.json", "w") as f:

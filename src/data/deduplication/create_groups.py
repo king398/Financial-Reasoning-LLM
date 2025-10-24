@@ -19,7 +19,7 @@ else:
     index, index_infos = build_index(
         embeddings,
         save_on_disk=True,
-        max_index_memory_usage="64GB",
+        max_index_memory_usage="32GB",
 
     )
 

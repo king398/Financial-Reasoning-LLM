@@ -28,8 +28,6 @@ batch_size = 100
 results = {}
 trial = 10
 for start in tqdm(range(0, len(embeddings), batch_size)):
-    if (trial * batch_size) < start:
-        break
     end = min(start + batch_size, len(embeddings))
     batch = embeddings[start:end]
     distances, indices = index.search(batch, k)

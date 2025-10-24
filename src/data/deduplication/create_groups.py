@@ -19,9 +19,10 @@ else:
     index, index_infos = build_index(
         embeddings,
         save_on_disk=True,
-        max_index_memory_usage="64GB"
+        max_index_memory_usage="64GB",
+        use_gpu=True,
+
     )
-    faiss.write_index(index, "knn.index")
 
 # Search for top 5 similar vectors for each embedding
 k = 5

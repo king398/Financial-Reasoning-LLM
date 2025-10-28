@@ -21,11 +21,9 @@ for source_id, neighbors in tqdm(data.items()):
 groups = list(nx.connected_components(G))
 
 # Convert to list of lists (for saving or inspection)
-groups_list = [list(group) for group in groups]
+groups_list = [list(group)[0] for group in groups]
 
 # Example output
-for i, g in enumerate(groups_list[:5]):
-    print(f"Group {i+1}: {g}")
 
 # Optional: save for later use
 import json

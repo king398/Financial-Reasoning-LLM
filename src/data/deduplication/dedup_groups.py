@@ -1,6 +1,6 @@
 import json
 import networkx as nx
-
+from tqdm import tqdm
 # Load data
 with open("top5_similarities.json", "r") as f:
     data = json.load(f)
@@ -9,7 +9,7 @@ with open("top5_similarities.json", "r") as f:
 G = nx.Graph()
 threshold = 0.98  # adjust for your deduplication sensitivity
 
-for source_id, neighbors in data.items():
+for source_id, neighbors in tqdm(data.items()):
     G.add_node(source_id)
     for entry in neighbors:
         target_id = entry["id"]

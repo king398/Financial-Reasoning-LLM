@@ -1,3 +1,5 @@
+trl
+python-dotenv
 tqdm
 numpy
 torch

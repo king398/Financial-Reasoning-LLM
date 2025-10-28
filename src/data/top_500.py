@@ -1,7 +1,7 @@
 import json
 
 # Load JSON
-with open("top_500_symbols.json", "r") as f:
+with open("dedup_groups.json", "r") as f:
     data = json.load(f)
 
 # Sum up all counts 

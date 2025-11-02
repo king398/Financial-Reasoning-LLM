@@ -1,3 +1,8 @@
+trl
+python-dotenv
+tqdm
+numpy
+torch
 requests
 beautifulsoup4
 datasets~=3.6.0

@@ -7,7 +7,7 @@ with open("top5_similarities.json", "r") as f:
 
 # Build a similarity graph
 G = nx.Graph()
-threshold = 0.96  # adjust for your deduplication sensitivity
+threshold = 0.93  # adjust for your deduplication sensitivity
 
 for source_id, neighbors in tqdm(data.items()):
     G.add_node(source_id)

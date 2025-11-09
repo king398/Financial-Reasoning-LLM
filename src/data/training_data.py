@@ -21,6 +21,7 @@ stock_list = [
 
 # Filter articles
 ds = ds.filter(lambda x: x['Stock_symbol'] in stock_list, num_proc=32)
+ds = ds.filter(lambda x: x['Article'] is not None)
 
 # 3️⃣ Build 7-day intervals
 start_date = "2018-01-01"

@@ -21,7 +21,7 @@ stock_list = [
 
 # Filter articles
 ds = ds.filter(lambda x: x['Stock_symbol'] in stock_list, num_proc=32)
-ds = ds.filter(lambda x: x['Article'] is not None)
+ds = ds.filter(lambda x: x['Textrank_summary'] != 'nan')
 
 # 3️⃣ Build 7-day intervals
 start_date = "2018-01-01"
@@ -50,7 +50,7 @@ def mapping(example):
 
 def create_prompt(example):
     example['text'] = f"""Article Title: {example['Article_title']}
-Article Text: {example['Article']}"""
+Article Text: {example['Textrank_summary']}"""
     return example
 
 
@@ -111,7 +111,7 @@ merged = pd.merge(
 
 
 # 1️⃣1️⃣ Add signal
-def signal_func(row, threshold=0.005):  # ±0.5% tolerance
+def signal_func(row, threshold=0.001):  # ±0.5% tolerance
     if pd.isna(row['Future_Close']) or pd.isna(row['End_Close']):
         return None
     change = (row['Future_Close'] - row['End_Close']) / row['End_Close']

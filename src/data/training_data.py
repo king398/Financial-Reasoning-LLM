@@ -172,7 +172,29 @@ for stock in tqdm(stock_list):
         })
 
 final_df = pd.DataFrame(dataset)
-final_ds = Dataset.from_pandas(final_df)
+# --- 1️⃣3️⃣ Time-based Train/Validation Split ---
+# Sort by End_Date (chronological order)
+final_df = final_df.sort_values("End_Date")
+
+# Compute cutoff at 80% of the time range
+cutoff_date = final_df["End_Date"].quantile(0.8)
+train_df = final_df[final_df["End_Date"] <= cutoff_date]
+val_df = final_df[final_df["End_Date"] > cutoff_date]
+
+# Convert to HF Datasets
+train_ds = Dataset.from_pandas(train_df, preserve_index=False)
+val_ds = Dataset.from_pandas(val_df, preserve_index=False)
+
+# Combine into a DatasetDict
+from datasets import DatasetDict
+final_ds = DatasetDict({
+    "train": train_ds,
+    "validation": val_ds
+})
+
+# Push to Hugging Face Hub
 final_ds.push_to_hub("Mithilss/financial-training")
-# Optional: save for later
-final_df.to_csv("stock_news_signal_dataset.csv", index=False)
+
+# Optional local save
+train_df.to_csv("stock_news_signal_train.csv", index=False)
+val_df.to_csv("stock_news_signal_val.csv", index=False)

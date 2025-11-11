@@ -28,6 +28,8 @@ model = FastLanguageModel.get_peft_model(
     use_rslora = False,  # We support rank stabilized LoRA
     loftq_config = None, # And LoftQ
 )
+def formatting_func(text):
+    return text
 trainer = SFTTrainer(
     model = model,
     tokenizer = tokenizer,

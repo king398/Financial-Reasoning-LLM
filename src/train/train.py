@@ -28,15 +28,15 @@ model = FastLanguageModel.get_peft_model(
     use_rslora = False,  # We support rank stabilized LoRA
     loftq_config = None, # And LoftQ
 )
-def formatting_func(text):
-    return {"text": text}
+def formatting_func(example):
+    return {"prompt": example['prompt']}
 trainer = SFTTrainer(
     model = model,
     tokenizer = tokenizer,
     train_dataset = train_dataset,
     eval_dataset = None, # Can set up evaluation!
     args = SFTConfig(
-        dataset_text_field = "text",
+        dataset_text_field = "prompt",
         per_device_train_batch_size = 2,
         gradient_accumulation_steps = 8, # Use GA to mimic batch size!
         warmup_steps = 5,

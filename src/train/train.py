@@ -32,7 +32,7 @@ trainer = SFTTrainer(
     model = model,
     tokenizer = tokenizer,
     train_dataset = train_dataset,
-    eval_dataset = validation_dataset, # Can set up evaluation!
+    eval_dataset = None, # Can set up evaluation!
     args = SFTConfig(
         dataset_text_field = "text",
         per_device_train_batch_size = 2,
@@ -47,6 +47,7 @@ trainer = SFTTrainer(
         seed = 3407,
         report_to = "wandb", # Use TrackIO/WandB etc
     ),
+    formatting_func=
 )
 trainer = train_on_responses_only(
     trainer,

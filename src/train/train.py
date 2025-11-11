@@ -47,7 +47,6 @@ trainer = SFTTrainer(
         seed = 3407,
         report_to = "wandb", # Use TrackIO/WandB etc
     ),
-    formatting_func=
 )
 trainer = train_on_responses_only(
     trainer,

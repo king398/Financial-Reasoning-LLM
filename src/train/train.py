@@ -4,7 +4,7 @@ from trl import SFTTrainer, SFTConfig
 from datasets import load_dataset
 from unsloth.chat_templates import train_on_responses_only
 train_dataset = load_dataset("Mithilss/financial-training")['train']
-validation_dataset = load_dataset("Mithilss/financial-validation")['validation']
+validation_dataset = load_dataset("Mithilss/financial-training")['validation']
 model, tokenizer = FastLanguageModel.from_pretrained(
     model_name = "unsloth/Qwen3-4B-Instruct-2507",
     max_seq_length = 16384, # Choose any for long context!

@@ -50,11 +50,8 @@ trainer = SFTTrainer(
         report_to = "wandb", # Use TrackIO/WandB etc
     ),
     formatting_func=formatting_func,
+
 )
-trainer = train_on_responses_only(
-    trainer,
-    instruction_part = "<|im_start|>user\n",
-    response_part = "<|im_start|>assistant\n",
-)
+
 
 trainer_stats = trainer.train()

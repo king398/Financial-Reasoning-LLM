@@ -29,7 +29,7 @@ model = FastLanguageModel.get_peft_model(
     loftq_config = None, # And LoftQ
 )
 def formatting_func(text):
-    return {"text": texts}
+    return {"text": text}
 trainer = SFTTrainer(
     model = model,
     tokenizer = tokenizer,

@@ -55,3 +55,4 @@ trainer = SFTTrainer(
 
 
 trainer_stats = trainer.train()
+trainer.push_to_hub("Mithilss/financial-llm")

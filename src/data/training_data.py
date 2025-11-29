@@ -169,6 +169,7 @@ for stock in tqdm(stock_list):
             "Future_Close": future_close,
             "Signal": signal,
             "prompt": text,
+            "input":prompt + texts + closing_price,
         })
 
 final_df = pd.DataFrame(dataset)

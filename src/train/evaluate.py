@@ -1,9 +1,19 @@
 from transformers import pipeline
 from datasets import load_dataset
+from vllm import LLM, SamplingParams
 
-validation_dataset = load_dataset("Mithilss/financial-training")['validation']
+llm = LLM(model="Mithilss/unsloth_training_checkpoints", tensor_parallel_size=2)
+params = SamplingParams(temperature=0.0)
+tokenizer = llm.get_tokenizer()
 
-question = "If you had a time machine, but could only go to the past or the future once and never return, which would you choose and why?"
-generator = pipeline("text-generation", model="Mithilss/unsloth_training_checkpoints", device="cuda")
-output = generator([{"role": "user", "content": question}], max_new_tokens=128, return_full_text=False)[0]
-print(output["generated_text"])
+
+def create_prompts(input):
+    prompt = tokenizer.apply_chat_template([{"role": "user", "content": input['input']}], add_generation_prompt=True,
+                                           tokenize=False)
+    return {"infer_prompt": prompt}
+
+
+validation_dataset = load_dataset("Mithilss/financial-training-v2")['validation']
+
+validation_dataset = validation_dataset.map(create_prompts)
+outputs = llm.generate(validation_dataset['infer_prompt'][:25], params)

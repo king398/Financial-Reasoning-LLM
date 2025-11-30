@@ -194,7 +194,7 @@ final_ds = DatasetDict({
 })
 
 # Push to Hugging Face Hub
-final_ds.push_to_hub("Mithilss/financial-training")
+final_ds.push_to_hub("Mithilss/financial-training-v2")
 
 # Optional local save
 train_df.to_csv("stock_news_signal_train.csv", index=False)

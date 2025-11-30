@@ -32,7 +32,7 @@ def create_prompts(example):
 # -------------------------
 # Load dataset
 # -------------------------
-validation_dataset = load_dataset("Mithilss/financial-training-v2")['validation']
+validation_dataset = load_dataset("Mithilss/financial-training-v2")['validation'].select(range(10))
 validation_dataset = validation_dataset.map(create_prompts)
 
 labels = validation_dataset['Signal']

@@ -16,7 +16,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 generator = pipeline(
     "text-generation",
     model=model_name,
-    batch_size=16,           # <<< batch size here
+    batch_size=4,           # <<< batch size here
     tokenizer=tokenizer,
     return_full_text=False
 )

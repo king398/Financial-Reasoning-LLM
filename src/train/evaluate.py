@@ -1,23 +1,29 @@
-from transformers import pipeline
+from transformers import pipeline, AutoTokenizer
 from datasets import load_dataset
-from vllm import LLM, SamplingParams
 
-llm = LLM(model="Mithilss/finance-llm", tensor_parallel_size=2)
-params = SamplingParams(temperature=0.0)
-tokenizer = llm.get_tokenizer()
+# Load tokenizer & model via HF pipeline
+model_name = "Mithilss/finance-llm"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
 
+generator = pipeline(
+    "text-generation",
+    model=model_name,
+    tokenizer=tokenizer,
+    max_new_tokens=128,
+    return_full_text=False,
+)
 
-def create_prompts(input):
-    prompt = tokenizer.apply_chat_template([{"role": "user", "content": input['input']}], add_generation_prompt=True,
-                                           tokenize=False)
-    return {"infer_prompt": prompt}
+def create_prompts(example):
 
+    return {"infer_prompt": [{"role": "user", "content": example['input']}]}
 
+# Load dataset
 validation_dataset = load_dataset("Mithilss/financial-training-v2")['validation']
 
+# Add prompts
 validation_dataset = validation_dataset.map(create_prompts)
-outputs = llm.generate(validation_dataset['infer_prompt'][:25], params)
-for output in outputs:
-    prompt = output.prompt
-    generated_text = output.outputs[0].text
-    print(f"Generated text: {generated_text!r}")
+
+outputs = generator(validation_dataset['infer_prompt'][:25])
+for i in outputs:
+    output = i["generated_text"]
+    print(f"Generated text: {output!r}")

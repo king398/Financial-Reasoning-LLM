@@ -2,7 +2,7 @@ from transformers import pipeline, AutoTokenizer
 from datasets import load_dataset
 from  tqdm import tqdm
 # Load tokenizer & model via HF pipeline
-model_name = "Mithilss/finance-llm"
+model_name = "Mithilss/finance-llm-merged"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 generator = pipeline(
@@ -10,7 +10,7 @@ generator = pipeline(
     model=model_name,
 
 )
-generator.push_to_hub("Mithilss/finance-llm-merged")
+#generator.push_to_hub("Mithilss/finance-llm-merged")
 
 def create_prompts(example):
     return {"infer_prompt": [{"role": "user", "content": example['input']}]}

@@ -6,7 +6,7 @@ from sklearn.metrics import (
     confusion_matrix, classification_report
 )
 import pandas as pd
-
+import torch
 # -------------------------
 # Load tokenizer & model
 # -------------------------
@@ -16,9 +16,9 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 generator = pipeline(
     "text-generation",
     model=model_name,
-    batch_size=4,           # <<< batch size here
     tokenizer=tokenizer,
-    return_full_text=False
+    return_full_text=False,
+    dtype=torch.float16,
 )
 
 # -------------------------
@@ -39,7 +39,7 @@ prompts = validation_dataset['infer_prompt']
 # -------------------------
 # Batched inference
 # -------------------------
-batch_size = 16
+batch_size = 4
 predictions = []
 
 for start in tqdm(range(0, len(prompts), batch_size)):
@@ -55,7 +55,7 @@ for start in tqdm(range(0, len(prompts), batch_size)):
 
     # Extract generated text from batch
     for out in outputs:
-        predictions.append(out['generated_text'])
+        predictions.append(out[0]['generated_text'])
 
 # -------------------------
 # Compute metrics

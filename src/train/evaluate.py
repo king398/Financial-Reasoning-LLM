@@ -24,7 +24,7 @@ validation_dataset = validation_dataset.map(create_prompts)
 labels = validation_dataset['Signal']
 outputs = []
 accurate = 0
-for i,element in tqdm(enumerate(validation_dataset['infer_prompt'][:250]),total=len(validation_dataset)):
+for i,element in tqdm(enumerate(validation_dataset['infer_prompt'][:20]),total=len(validation_dataset)):
     output = generator(element,max_new_tokens=128,
                     return_full_text=False, do_sample=False)
     if labels[i] == output[0]['generated_text']:

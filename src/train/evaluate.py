@@ -2,7 +2,7 @@ from transformers import pipeline
 from datasets import load_dataset
 from vllm import LLM, SamplingParams
 
-llm = LLM(model="Mithilss/unsloth_training_checkpoints", tensor_parallel_size=2)
+llm = LLM(model="Mithilss/finance-llm", tensor_parallel_size=2)
 params = SamplingParams(temperature=0.0)
 tokenizer = llm.get_tokenizer()
 

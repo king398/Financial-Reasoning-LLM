@@ -17,3 +17,7 @@ validation_dataset = load_dataset("Mithilss/financial-training-v2")['validation'
 
 validation_dataset = validation_dataset.map(create_prompts)
 outputs = llm.generate(validation_dataset['infer_prompt'][:25], params)
+for output in outputs:
+    prompt = output.prompt
+    generated_text = output.outputs[0].text
+    print(f"Generated text: {generated_text!r}")

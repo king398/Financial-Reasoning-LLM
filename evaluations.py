@@ -101,6 +101,12 @@ def _fetch_spy_prices(start: pd.Timestamp, end: pd.Timestamp) -> pd.Series:
     else:
         raise ValueError("Unexpected SPY data structure from yfinance.")
 
+    # Newer versions of yfinance return MultiIndex columns even for single tickers.
+    if isinstance(prices, pd.DataFrame):
+        if prices.shape[1] != 1:
+            raise ValueError("SPY price frame contains multiple columns unexpectedly.")
+        prices = prices.squeeze(axis=1)
+
     prices.name = "SPY"
     prices = prices.dropna()
     if prices.empty:
